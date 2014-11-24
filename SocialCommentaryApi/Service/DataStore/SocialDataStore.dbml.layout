@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ordesignerObjectsDiagram dslVersion="1.0.0.0" absoluteBounds="0, 0, 11, 8.5" name="SocialDataStore">
+  <DataContextMoniker Name="/SocialDataStoreDataContext" />
+  <nestedChildShapes>
+    <classShape Id="75ed89b2-333e-4bb6-b01c-b58e5ab1beeb" absoluteBounds="2.375, 1.25, 2, 1.9631982421875">
+      <DataClassMoniker Name="/SocialDataStoreDataContext/SocialStream" />
+      <nestedChildShapes>
+        <elementListCompartment Id="388db8d3-cd84-4c60-9611-804fe544d9fc" absoluteBounds="2.39, 1.71, 1.9700000000000002, 1.4031982421875" name="DataPropertiesCompartment" titleTextColor="Black" itemTextColor="Black" />
+      </nestedChildShapes>
+    </classShape>
+  </nestedChildShapes>
+</ordesignerObjectsDiagram>

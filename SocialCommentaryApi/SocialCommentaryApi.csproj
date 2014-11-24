@@ -38,6 +38,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Fpr">
+      <HintPath>..\packages\Fpr.1.10.4.39547\lib\net45\Fpr.dll</HintPath>
+    </Reference>
     <Reference Include="LinqToTwitter.AspNet">
       <HintPath>..\packages\LinqToTwitter.3.1.0\lib\net45\LinqToTwitter.AspNet.dll</HintPath>
     </Reference>
@@ -73,6 +76,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\NLog.2.0.1.2\lib\net45\NLog.dll</HintPath>
     </Reference>
+    <Reference Include="System.Data.Linq" />
     <Reference Include="System.IO.Compression" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Extensions">
@@ -134,6 +138,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\SocialData.mdf" />
+    <Content Include="App_Data\SocialData_log.ldf">
+      <DependentUpon>SocialData.mdf</DependentUpon>
+    </Content>
     <Content Include="Global.asax" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -144,9 +152,19 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ScTweet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\DataStore\LocalDataStore.cs" />
+    <Compile Include="Service\DataStore\SocialDataStore.designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>SocialDataStore.dbml</DependentUpon>
+    </Compile>
+    <Compile Include="Service\Helpers\ObjectExtensions.cs" />
     <Compile Include="Service\Twitter\TwitterAuthorizationFactory.cs" />
+    <Compile Include="Service\Twitter\TwitterFprRegistry.cs" />
     <Compile Include="Service\Twitter\TwitterSearch.cs" />
+    <Compile Include="Service\Twitter\TwitterStreamContentMapper.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -156,6 +174,11 @@
     <None Include="NLog.xsd">
       <SubType>Designer</SubType>
     </None>
+    <Content Include="Service\DataStore\SocialDataStore.dbml">
+      <Generator>MSLinqToSQLGenerator</Generator>
+      <LastGenOutput>SocialDataStore.designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -164,8 +187,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
-    <Folder Include="Models\" />
+    <Service Include="{3259AA49-8AA1-44D3-9025-A0B520596A8C}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service\DataStore\SocialDataStore.dbml.layout">
+      <DependentUpon>SocialDataStore.dbml</DependentUpon>
+    </None>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

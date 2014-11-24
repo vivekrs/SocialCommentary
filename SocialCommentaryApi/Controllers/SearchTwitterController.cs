@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
+﻿using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using SocialCommentaryApi.Service.Twitter;
-using StreamContent = LinqToTwitter.StreamContent;
 
 namespace SocialCommentaryApi.Controllers
 {
@@ -35,14 +31,7 @@ namespace SocialCommentaryApi.Controllers
                 {
                     try
                     {
-                        await _twitterSearch.DoFilterStreamAsync(query, async arg =>
-                        {
-                            var buffer =
-                                Encoding.UTF8.GetBytes(string.Format("{0}{1}", (ctr[0] == 0 ? "[" : ","), arg.Content.Replace("\n"," ")));
-                            // Write out data to output stream
-                            await outputStream.WriteAsync(buffer, 0, buffer.Length);
-                            return ctr[0] != count && ++ctr[0] != count;
-                        });
+                        await _twitterSearch.DoFilterStreamAsync(query, async stream => await WriteStreamToResponse(count, ctr, stream, outputStream));
                     }
                     catch (HttpException ex)
                     {
@@ -53,11 +42,22 @@ namespace SocialCommentaryApi.Controllers
                     {
                         // Close output stream as we are done
                         var buffer = Encoding.UTF8.GetBytes("]");
+
+                        // ReSharper disable once CSharpWarnings::CS4014
                         outputStream.WriteAsync(buffer, 0, buffer.Length).ContinueWith(c => outputStream.Close());
                     }
                 });
 
             return response;
+        }
+
+        private static async Task<bool> WriteStreamToResponse(int maxCount, int[] ctr, string streamContent, Stream outputStream)
+        {
+            var buffer =
+                Encoding.UTF8.GetBytes(string.Format("{0}{1}", (ctr[0] == 0 ? "[" : ","), streamContent.Replace("\n", " ")));
+            // Write out data to output stream
+            await outputStream.WriteAsync(buffer, 0, buffer.Length);
+            return ctr[0] != maxCount && ++ctr[0] != maxCount;
         }
     }
 }
